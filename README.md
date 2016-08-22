@@ -4,7 +4,7 @@
 
 # SYNOPSIS
 
-    $ perl -Ilib -MGetopt::CodeGenerator='--foo a  --bar 2 --mix 1 a --dry-run'
+    $ perl -MGetopt::CodeGenerator='--foo a  --bar 2 --mix 1 a --dry-run'
     use Getopt::Long qw(:config posix_default no_ignore_case gnu_compat);
     my %opt;
     my $res = GetOptions(
