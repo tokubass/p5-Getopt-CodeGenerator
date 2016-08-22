@@ -1,0 +1,103 @@
+package  Getopt::CodeGenerator;
+use strict;
+use warnings;
+use Text::MicroTemplate;
+use Getopt::CodeGenerator::OptStruct;
+
+sub import {
+    my $class = shift;
+    my $self = $class->new(split(" ",$_[0]));
+    print $self->generate_code;
+    exit 0;
+}
+
+sub new {
+    my $class = shift;
+    my $opts = get_opts(@_);
+    bless $opts, $class;
+}
+
+sub get_opts {
+    my @argv = @_;
+    my @data;
+
+    while(defined(my $opt_name = shift @argv)) {
+        next if $opt_name eq '--';
+        
+        if ($opt_name =~ s/\A--//) {
+            my $struct = Getopt::CodeGenerator::OptStruct->new;
+            $struct->opt_name($opt_name);
+
+            my $i = 0;
+            for (@argv) {
+                last unless $struct->is_value($_);
+                $i++;
+            }
+
+            if ($i == 1) {
+                $struct->value(splice(@argv,0,1));
+            }elsif ($i > 1) {
+                $struct->value([splice(@argv,0,$i)]);
+            }
+            
+            push @data,$struct;
+                
+            next;
+        }
+        die 'expect option name. but got', "$opt_name";
+    }
+
+    return \@data;
+
+}
+
+
+sub generate_code {
+    my $self = shift;
+    my $renderer =  Text::MicroTemplate->new(
+        template => do { local $/; <DATA> },
+        escape_func  => undef,
+    )->build;
+    $renderer->($self);
+}
+
+
+1; 
+
+=encoding utf-8
+
+=head1 NAME
+
+ Getopt::CodeGenerator - for Getopt::Long code geenerator
+
+=head1 SYNOPSIS
+
+ $ perl -Ilib -MGetopt::CodeGenerator='--foo a  --bar 2 -- --mixi 1 a --dry-run'
+ my %opt;
+ my $res = GetOptions(
+     'foo=s' => \$opt->{foo},
+     'bar=i' => \$opt->{bar},
+     'mixi=s{2}' => \$opt->{mixi},
+     'dry-run' => \$opt->{dry_run},
+ );
+
+=head1 LICENSE
+
+Copyright (C) tokubass.
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=head1 AUTHOR
+
+tokubass E<lt>tokubass {at} cpan.orgE<gt>
+
+=cut
+
+__DATA__
+my %opt;
+my $res = GetOptions(
+? for my $struct  (@{$_[0]}) {
+    '<?= $struct->opt_name . $struct->value_type . $struct->value_range ?>' => \$opt->{<?= $struct->value_key ?>},
+? }
+);
