@@ -4,7 +4,7 @@ use warnings;
 use Getopt::CodeGenerator;
 
 subtest 'multi' => sub {
-    my @argv = (qw/ --foo 1 b -- --bar --opt-name1 /);
+    my @argv = (qw/ --foo 1 b --bar --opt-name1 /);
 
     my $gen = Getopt::CodeGenerator->new(@argv);
     my $opt = shift @$gen;

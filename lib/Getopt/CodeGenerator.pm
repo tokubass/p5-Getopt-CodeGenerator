@@ -78,14 +78,14 @@ sub generate_code {
 
 =head1 SYNOPSIS
 
- $ perl -Ilib -MGetopt::CodeGenerator='--foo a  --bar 2 -- --mix 1 a --dry-run'
+ $ perl -Ilib -MGetopt::CodeGenerator='--foo a  --bar 2 --mix 1 a --dry-run'
  use Getopt::Long qw(:config posix_default no_ignore_case gnu_compat);
  my %opt;
  my $res = GetOptions(
-     'foo=s' => \$opt->{foo},
-     'bar=i' => \$opt->{bar},
-     'mix=s{2}' => \$opt->{mix},
-     'dry-run' => \$opt->{dry_run},
+     'foo=s' => \$opt{foo},
+     'bar=i' => \$opt{bar},
+     'mix=s{2}' => \@{$opt{mix}},
+     'dry-run' => \$opt{dry_run},
  );
 
 =head1 LICENSE
@@ -106,6 +106,11 @@ use Getopt::Long qw(:config posix_default no_ignore_case gnu_compat);
 my %opt;
 my $res = GetOptions(
 ? for my $struct  (@{$_[0]}) {
-    '<?= $struct->opt_name . $struct->value_type . $struct->value_range ?>' => \$opt->{<?= $struct->value_key ?>},
+?    if($struct->value_range) {
+    '<?= $struct->opt_name . $struct->value_type . $struct->value_range ?>' => \@{$opt{<?= $struct->value_key ?>}},
+?    }
+?    else{
+    '<?= $struct->opt_name . $struct->value_type . $struct->value_range ?>' => \$opt{<?= $struct->value_key ?>},
+?    }
 ? }
 );
