@@ -50,7 +50,7 @@ sub get_opts {
                 
             next;
         }
-        die 'expect option name. but got', "$opt_name";
+        die 'expect option name. but got ', "$opt_name";
     }
 
     return \@data;
@@ -78,12 +78,12 @@ sub generate_code {
 
 =head1 SYNOPSIS
 
- $ perl -Ilib -MGetopt::CodeGenerator='--foo a  --bar 2 -- --mixi 1 a --dry-run'
+ $ perl -Ilib -MGetopt::CodeGenerator='--foo a  --bar 2 -- --mix 1 a --dry-run'
  my %opt;
  my $res = GetOptions(
      'foo=s' => \$opt->{foo},
      'bar=i' => \$opt->{bar},
-     'mixi=s{2}' => \$opt->{mixi},
+     'mix=s{2}' => \$opt->{mixi},
      'dry-run' => \$opt->{dry_run},
  );
 
