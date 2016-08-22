@@ -24,7 +24,7 @@ sub new {
 }
 
 sub get_opts {
-    my @argv = @_;
+    my @argv = map { split '=', $_ } @_;
     my @data;
 
     while(defined(my $opt_name = shift @argv)) {

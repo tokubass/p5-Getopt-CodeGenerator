@@ -4,15 +4,17 @@ use warnings;
 use Getopt::CodeGenerator;
 
 subtest 'number' => sub {
-    my @argv = (qw/ --foo 10 /);
+    my @argv = ([qw/ --foo 10 /],[qw/ --foo=10 /]);
 
-    my $gen = Getopt::CodeGenerator->new(@argv);
-    my $opt = shift @$gen;
-    is($opt->opt_name, 'foo');
-    is($opt->value, 10);
-    is($opt->value_key, 'foo');
-    is($opt->value_range, '');
-    is($opt->value_type, '=i');
+    for my $arg (@argv) {
+        my $gen = Getopt::CodeGenerator->new(@$arg);
+        my $opt = shift @$gen;
+        is($opt->opt_name, 'foo');
+        is($opt->value, 10);
+        is($opt->value_key, 'foo');
+        is($opt->value_range, '');
+        is($opt->value_type, '=i');
+    }
 };
 subtest 'string' => sub {
     my @argv = (qw/ --foo aa /);
