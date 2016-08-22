@@ -1,4 +1,4 @@
-package  Getopt::CodeGenerator;
+package Getopt::CodeGenerator;
 use strict;
 use warnings;
 use Text::MicroTemplate;
@@ -6,9 +6,15 @@ use Getopt::CodeGenerator::OptStruct;
 
 sub import {
     my $class = shift;
-    my $self = $class->new(split(" ",$_[0]));
-    print $self->generate_code;
-    exit 0;
+    if (@_) {
+        my $self = $class->new(split(" ",$_[0]));
+        print $self->generate_code;
+    }
+
+    # for oneliner
+    if ($0 eq '-') {
+        exit 0;
+    }
 }
 
 sub new {
