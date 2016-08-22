@@ -79,6 +79,7 @@ sub generate_code {
 =head1 SYNOPSIS
 
  $ perl -Ilib -MGetopt::CodeGenerator='--foo a  --bar 2 -- --mix 1 a --dry-run'
+ use Getopt::Long qw(:config posix_default no_ignore_case gnu_compat);
  my %opt;
  my $res = GetOptions(
      'foo=s' => \$opt->{foo},
@@ -101,6 +102,7 @@ tokubass E<lt>tokubass {at} cpan.orgE<gt>
 =cut
 
 __DATA__
+use Getopt::Long qw(:config posix_default no_ignore_case gnu_compat);
 my %opt;
 my $res = GetOptions(
 ? for my $struct  (@{$_[0]}) {
