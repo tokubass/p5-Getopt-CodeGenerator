@@ -83,7 +83,7 @@ sub generate_code {
  my $res = GetOptions(
      'foo=s' => \$opt->{foo},
      'bar=i' => \$opt->{bar},
-     'mix=s{2}' => \$opt->{mixi},
+     'mix=s{2}' => \$opt->{mix},
      'dry-run' => \$opt->{dry_run},
  );
 
